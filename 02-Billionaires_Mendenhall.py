@@ -57,10 +57,10 @@ df.shape[1]
 
 # ## 3) Who are the top 10 richest billionaires? Use the `networthusbillion` column.
 
-# In[ ]:
+# In[13]:
 
 
-
+df.sort_values(by='networthusbillion', ascending=False).head(10)
 
 
 # ## 4) How many male billionaires are there compared to the number of female billionares? What percent is that? Do they have a different average wealth?
@@ -68,22 +68,42 @@ df.shape[1]
 # > **TIP:** The last part uses `groupby`, but the count/percent part does not.
 # > **TIP:** When I say "average," you can pick what kind of average you use.
 
-# In[ ]:
+# In[14]:
 
 
+rich_ladies = (df.gender == 'female')
 
 
-
-# In[ ]:
-
+# In[15]:
 
 
+rich_guys = (df.gender == 'male')
 
 
-# In[ ]:
+# In[27]:
 
 
+print(df[rich_guys].name.count())
+print(df[rich_ladies].name.count())
+print(((df[rich_guys].name.count())/(df[rich_ladies].name.count())*100).round(2))
 
+
+# In[32]:
+
+
+df[rich_ladies].networthusbillion.mean().round(3)
+
+
+# In[31]:
+
+
+df[rich_guys].networthusbillion.mean().round(3)
+
+
+# In[34]:
+
+
+# I am not sure what needs the groupby, so I'll need to check what I messed up on this one. 
 
 
 # ## 5) What is the most common source/type of wealth? Is it different between males and females?
@@ -91,16 +111,22 @@ df.shape[1]
 # > **TIP:** You know how to `groupby` and you know how to count how many times a value is in a column. Can you put them together???
 # > **TIP:** Use percentages for this, it makes it a lot more readable.
 
-# In[ ]:
+# In[35]:
 
 
+df[rich_ladies].sourceofwealth.mode()
 
 
-
-# In[ ]:
-
+# In[36]:
 
 
+df[rich_guys].sourceofwealth.mode()
+
+
+# In[37]:
+
+
+#again, not sure why the tip is used in this case.  It appears that the use of the variable I created worked, but I might have gotten this wrong.
 
 
 # ## 6) What companies have the most billionaires? Graph the top 5 as a horizontal bar graph.
@@ -115,18 +141,33 @@ df.shape[1]
 # >
 # > **TIP:** If your chart seems... weird, think about where in the process you're sorting vs using `head`
 
-# In[ ]:
+# In[38]:
 
 
+#df.groupby(by='sourceofwealth')
+df.sourceofwealth.value_counts()
 
+
+# In[39]:
+
+
+df.sourceofwealth.value_counts().head()
+
+
+# In[43]:
+
+
+df.sourceofwealth.value_counts().head().sort_values().plot(kind='barh')
 
 
 # ## 7) How much money do these billionaires have in total?
 
-# In[ ]:
+# In[49]:
 
 
+# I assume this is about ALL of the billionaires? 
 
+df.networthusbillion.sum().round(3)
 
 
 # ## 8) What are the top 10 countries with the most money held by billionaires?
@@ -135,54 +176,73 @@ df.shape[1]
 # 
 # > **TIP:** Think about it in steps - "I want them organized by country," "I want their net worth," "I want to add it all up," and "I want 10 of them." Just chain it all together.
 
-# In[ ]:
+# In[52]:
 
 
-
+df.groupby(by='citizenship').networthusbillion.sum().sort_values(ascending = False).head(10)
 
 
 # ## 9) How old is an average billionaire? How old are self-made billionaires  vs. non self-made billionaires? 
 
-# In[ ]:
+# In[54]:
 
 
+#Is this asking the average age of a billionaire? 
+df.age.mean().round(2)
 
 
-
-# In[ ]:
-
+# In[55]:
 
 
+df[df.selfmade == 'self-made'].age.mean().round(2)
+
+
+# In[56]:
+
+
+df[df.selfmade == 'inherited'].age.mean().round(2)
 
 
 # ## 10) Who are the youngest billionaires? Who are the oldest? Make a graph of the distribution of ages.
 # 
 # > **TIP:** You use `.plot()` to graph values in a column independently, but `.hist()` to draw a [histogram](https://www.mathsisfun.com/data/histograms.html) of the distribution of their values
 
-# In[ ]:
+# In[63]:
 
 
+df.age.sort_values().count()
 
 
-
-# In[ ]:
-
+# In[68]:
 
 
+df.age.sort_values().dropna().tail()
 
 
-# In[ ]:
+# In[69]:
 
 
+df.age.sort_values().dropna().head()
 
+
+# In[76]:
+
+
+df.age.sort_values().dropna().plot.hist(x ='age')
 
 
 # ## 11) Make a scatterplot of net worth compared to age
 
-# In[ ]:
+# In[79]:
 
 
+df.plot.scatter(x ='age', y = 'networthusbillion')
 
+
+# In[80]:
+
+
+# what happends to NA values when you plot like this? 
 
 
 # ## 13) Make a bar graph of the wealth of the top 10 richest billionaires
@@ -191,10 +251,10 @@ df.shape[1]
 # >
 # > **TIP:** x and y might be the opposite of what you expect them to be
 
-# In[ ]:
+# In[85]:
 
 
-
+df.networthusbillion.sort_values(ascending = False).head(10).plot(kind='barh', x = 'Net Worth Billions', y = 'index')
 
 
 # In[ ]:
