@@ -145,10 +145,10 @@ cats = (df.animal == 'cat')
 dogs = (df.animal == 'dog')
 
 
-# In[54]:
+# In[125]:
 
 
-cats.head()
+df[cats].head()
 
 
 # ## 11) Display all of the animals that are cats and above 12 inches long.
@@ -171,27 +171,24 @@ df[cats&(df.inches>12)]
 df.inches.mean()
 
 
-# In[89]:
+# In[127]:
 
 
-df.groupby(by=cats).inches.mean()
-# I don't think it should be returning the False parameter also? right?
+df[cats].inches.mean()
 
 
-# In[94]:
+# In[126]:
 
 
-df.groupby(by=dogs).inches.mean()
-# same here. Not sure why I am getting both True and False
+df[dogs].inches.mean()
 
 
 # ## 13) If you didn't already, use `groupby` to do #12 all at once
 
-# In[96]:
+# In[130]:
 
 
-df.groupby(by=dogs & cats).inches.mean()
-# don't believe this is correct
+df.groupby(by='animal').inches.mean()
 
 
 # ## 14) Make a histogram of the length of dogs.
@@ -204,10 +201,10 @@ df.groupby(by=dogs & cats).inches.mean()
 # >
 # > **TIP:** This is the worst histogram ever
 
-# In[104]:
+# In[131]:
 
 
-df[dogs].length.hist()
+df[dogs].length.plot.hist()
 #this does not seem correct to me.  I am not sure what I am doing wrong here. I believe it represents what the data has, but it really does look terrible. 
 
 
@@ -227,15 +224,15 @@ df[dogs].length
 # >
 # > **TIP:** If you want, you can set a custom size for your plot by sending it something like `figsize=(15,2)`
 
-# In[106]:
+# In[147]:
 
 
-df.groupby(by='name').length.plot(kind='barh')
+df.length.plot.barh( x= 'length', y = 'name')
 
-#hmmmm I am not sure how this is different than the example that we had in class. Why are the names counted rather than listed as the X axis?
+#hmmmm I am not sure how this is different than the example that we had in class. Why are the names counted rather than listed as the y axis?
 
 
-# In[111]:
+# In[135]:
 
 
 df.name.length.plot(kind='barh')
